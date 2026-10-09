@@ -1,0 +1,265 @@
+<!DOCTYPE html>
+<html lang="id">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Preview — Rangkuman Kelas 12</title>
+<script src="https://cdn.tailwindcss.com"></script>
+<script>
+  tailwind.config = {
+    darkMode: 'class',
+    theme: {
+      extend: {
+        colors: {
+          primary: { 50:'#EEF4FB',100:'#D6E5F5',200:'#AECBEB',300:'#7FAEDE',400:'#4B8DCB',500:'#2F6FB0',600:'#1B4D89',700:'#163F70',800:'#12314F',900:'#0C2338' },
+          accent:  { 50:'#EAFBF3',100:'#CDF3E1',200:'#98E6C3',300:'#4BC98F',400:'#2EC085',500:'#1FAE72',600:'#14805A',700:'#106548',800:'#0B4A35' },
+          ink:     { 950:'#0B1220',900:'#121B2E',800:'#1A2540',700:'#22304A',400:'#8A97AC',100:'#E7ECF3' },
+        },
+        fontFamily: {
+          display: ['Lexend','ui-sans-serif','system-ui','sans-serif'],
+          sans: ['Inter','ui-sans-serif','system-ui','sans-serif'],
+          mono: ['"JetBrains Mono"','ui-monospace','monospace'],
+        },
+        borderRadius: { tab: '0.375rem 0.375rem 0 0' },
+      }
+    }
+  }
+</script>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Lexend:wght@500;600;700&family=Inter:wght@400;500;600&family=JetBrains+Mono:wght@500;700&display=swap">
+<script defer src="https://cdn.jsdelivr.net/npm/alpinejs@3.x.x/dist/cdn.min.js"></script>
+<style>
+  [x-cloak]{display:none!important}
+  body{font-family:'Inter',sans-serif}
+  .tab-badge{display:inline-flex;align-items:center;justify-content:center;border-radius:0.375rem 0.375rem 0 0;padding:0.25rem 0.625rem;font-family:'JetBrains Mono',monospace;font-size:0.75rem;font-weight:700;letter-spacing:0.02em}
+  .surface{background:#fff;border:1px solid #e2e8f0;box-shadow:0 1px 2px rgba(12,35,56,.06)}
+  .dark .surface{background:#121B2E;border-color:#22304A;box-shadow:0 1px 2px rgba(0,0,0,.4)}
+</style>
+</head>
+<body x-data="{
+    dark: window.matchMedia('(prefers-color-scheme: dark)').matches,
+    page: 'landing',
+    subject: null,
+    topic: null,
+    goSubject(s){ this.subject = s; this.page = 'subject' },
+    goTopic(t){ this.topic = t; this.page = 'topic' },
+  }"
+  x-init="$watch('dark', v => document.documentElement.classList.toggle('dark', v)); document.documentElement.classList.toggle('dark', dark)"
+  class="min-h-screen flex flex-col bg-[#F6F8FB] text-[#101828] dark:bg-ink-950 dark:text-ink-100 antialiased">
+
+  <!-- NAVBAR -->
+  <header class="sticky top-0 z-30 border-b border-slate-200 bg-white/90 backdrop-blur dark:border-ink-700 dark:bg-ink-950/90">
+    <div class="mx-auto flex max-w-6xl items-center justify-between px-4 py-3 sm:px-6">
+      <button @click="page='landing'" class="flex items-center gap-2">
+        <span class="tab-badge bg-primary-600 text-white">R12</span>
+        <span class="font-display text-base font-semibold sm:text-lg">Rangkuman<span class="text-accent-500">.</span></span>
+      </button>
+      <button @click="dark = !dark" class="inline-flex h-9 w-9 items-center justify-center rounded-full border border-slate-200 text-slate-600 hover:bg-slate-100 dark:border-ink-700 dark:text-ink-100 dark:hover:bg-ink-800" aria-label="Ganti mode tampilan">
+        <svg x-show="dark" x-cloak class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M12 3v1.5m0 15V21m9-9h-1.5M4.5 12H3m15.36 6.36l-1.06-1.06M6.7 6.7 5.64 5.64m12.72 0-1.06 1.06M6.7 17.3l-1.06 1.06M12 7.5a4.5 4.5 0 100 9 4.5 4.5 0 000-9Z"/></svg>
+        <svg x-show="!dark" x-cloak class="h-4 w-4" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M21 12.79A9 9 0 1111.21 3 7 7 0 0021 12.79Z"/></svg>
+      </button>
+    </div>
+  </header>
+
+  <main class="flex-1">
+
+    <!-- ======================= LANDING ======================= -->
+    <template x-if="page === 'landing'">
+      <div>
+        <section class="border-b border-slate-200 bg-gradient-to-b from-primary-50 to-white dark:border-ink-700 dark:from-ink-900 dark:to-ink-950">
+          <div class="mx-auto max-w-6xl px-4 py-12 sm:px-6 sm:py-16 lg:py-20">
+            <span class="tab-badge bg-accent-500 text-white">UJIAN KELAS 12</span>
+            <h1 class="mt-4 max-w-xl font-display text-3xl font-bold leading-tight text-slate-900 dark:text-ink-100 sm:text-4xl lg:text-5xl">
+              Rangkuman tiap bab, langsung ke intinya.
+            </h1>
+            <p class="mt-3 max-w-lg text-sm text-slate-600 dark:text-ink-400 sm:text-base">
+              Tidak perlu buka ulang buku paket. Pilih mata pelajaran, pilih bab, dan baca poin-poin pentingnya dalam hitungan menit.
+            </p>
+            <form onsubmit="return false" class="mt-6 flex max-w-md gap-2">
+              <input type="search" placeholder='Cari mapel atau bab, mis. "Turunan"' class="w-full rounded-lg border border-slate-200 bg-white px-4 py-2.5 text-sm placeholder:text-slate-400 focus:border-primary-400 focus:outline-none focus:ring-2 focus:ring-primary-200 dark:border-ink-700 dark:bg-ink-900 dark:text-ink-100 dark:placeholder:text-ink-400">
+              <button class="shrink-0 rounded-lg bg-primary-600 px-4 py-2.5 text-sm font-semibold text-white hover:bg-primary-700">Cari</button>
+            </form>
+          </div>
+        </section>
+
+        <section class="mx-auto max-w-6xl px-4 py-10 sm:px-6 sm:py-14">
+          <h2 class="mb-6 font-display text-lg font-semibold sm:text-xl">Pilih Mata Pelajaran</h2>
+          <div class="grid grid-cols-2 gap-3 sm:grid-cols-3 sm:gap-4 lg:grid-cols-4" id="subject-grid"></div>
+        </section>
+
+        <section class="border-t border-slate-200 bg-white dark:border-ink-700 dark:bg-ink-900">
+          <div class="mx-auto grid max-w-6xl gap-6 px-4 py-10 sm:grid-cols-3 sm:px-6 sm:py-14">
+            <div>
+              <span class="tab-badge bg-primary-50 text-primary-700 dark:bg-primary-900/30 dark:text-primary-300">✓</span>
+              <h3 class="mt-3 font-display text-sm font-semibold">Padat, tanpa basa-basi</h3>
+              <p class="mt-1 text-sm text-slate-500 dark:text-ink-400">Setiap bab dirangkum jadi poin-poin inti yang bisa dibaca ulang menjelang ujian.</p>
+            </div>
+            <div>
+              <span class="tab-badge bg-primary-50 text-primary-700 dark:bg-primary-900/30 dark:text-primary-300">✓</span>
+              <h3 class="mt-3 font-display text-sm font-semibold">Ditandai per bab</h3>
+              <p class="mt-1 text-sm text-slate-500 dark:text-ink-400">Lihat estimasi waktu baca dan tandai bab yang sudah kamu pelajari.</p>
+            </div>
+            <div>
+              <span class="tab-badge bg-primary-50 text-primary-700 dark:bg-primary-900/30 dark:text-primary-300">✓</span>
+              <h3 class="mt-3 font-display text-sm font-semibold">Nyaman siang atau malam</h3>
+              <p class="mt-1 text-sm text-slate-500 dark:text-ink-400">Mode gelap otomatis mengikuti pengaturan perangkatmu, atau ganti manual kapan saja.</p>
+            </div>
+          </div>
+        </section>
+      </div>
+    </template>
+
+    <!-- ======================= SUBJECT (daftar bab) ======================= -->
+    <template x-if="page === 'subject'">
+      <div class="mx-auto max-w-3xl px-4 py-8 sm:px-6 sm:py-12">
+        <nav class="mb-4 flex gap-1.5 font-mono text-xs text-slate-400 dark:text-ink-400">
+          <button @click="page='landing'" class="hover:text-primary-600 dark:hover:text-primary-300">Beranda</button>
+          <span>/</span><span class="text-slate-600 dark:text-ink-100" x-text="subject?.name"></span>
+        </nav>
+        <div class="mb-6 flex items-center gap-3">
+          <span class="tab-badge bg-primary-600 text-lg text-white" x-text="subject?.code"></span>
+          <div>
+            <h1 class="font-display text-xl font-bold sm:text-2xl" x-text="subject?.name"></h1>
+            <p class="text-xs text-slate-500 dark:text-ink-400">5 bab tersedia</p>
+          </div>
+        </div>
+        <div class="space-y-2" id="topic-list"></div>
+      </div>
+    </template>
+
+    <!-- ======================= TOPIC (rangkuman) ======================= -->
+    <template x-if="page === 'topic'">
+      <div class="mx-auto max-w-6xl px-4 py-8 sm:px-6 sm:py-12">
+        <nav class="mb-4 flex gap-1.5 font-mono text-xs text-slate-400 dark:text-ink-400">
+          <button @click="page='landing'" class="hover:text-primary-600 dark:hover:text-primary-300">Beranda</button>
+          <span>/</span>
+          <button @click="page='subject'" class="hover:text-primary-600 dark:hover:text-primary-300" x-text="subject?.name"></button>
+          <span>/</span><span class="text-slate-600 dark:text-ink-100" x-text="topic?.number"></span>
+        </nav>
+
+        <div class="lg:grid lg:grid-cols-[1fr_240px] lg:items-start lg:gap-10">
+          <article class="max-w-2xl">
+            <div class="mb-6 flex items-center gap-3">
+              <span class="tab-badge bg-accent-500 font-mono text-white" x-text="topic?.number"></span>
+              <span class="font-mono text-xs text-slate-400 dark:text-ink-400" x-text="topic?.read + ' menit baca'"></span>
+            </div>
+            <h1 class="font-display text-2xl font-bold sm:text-3xl" x-text="topic?.title"></h1>
+
+            <div class="mt-6 space-y-5 text-sm leading-relaxed sm:text-base">
+              <h2 class="font-display text-lg font-semibold">1. Konsep Dasar</h2>
+              <p>Turunan sebuah fungsi menggambarkan laju perubahan nilai fungsi terhadap perubahan variabel bebasnya. Secara geometris, turunan di suatu titik sama dengan gradien garis singgung kurva di titik itu.</p>
+
+              <div class="my-4 rounded-r-lg border-l-4 border-primary-500 bg-primary-50 px-4 py-3 dark:bg-primary-900/20">
+                <p class="mb-1 font-mono text-[11px] font-bold uppercase tracking-wide text-primary-700 dark:text-primary-300">Rumus / Catatan</p>
+                <p class="text-sm">f'(x) = lim<sub>h→0</sub> [f(x + h) − f(x)] / h</p>
+              </div>
+
+              <h2 class="font-display text-lg font-semibold">2. Aturan Turunan</h2>
+              <p>Beberapa aturan dasar mempercepat perhitungan tanpa harus kembali ke definisi limit: aturan pangkat, hasil kali, hasil bagi, dan aturan rantai.</p>
+
+              <div class="my-4 rounded-r-lg border-l-4 border-accent-500 bg-accent-50 px-4 py-3 dark:bg-accent-800/20">
+                <p class="mb-1 font-mono text-[11px] font-bold uppercase tracking-wide text-accent-700 dark:text-accent-300">Poin Penting</p>
+                <p class="text-sm">Aturan rantai paling sering muncul di soal ujian — kenali pola fungsi komposisi sebelum menurunkannya.</p>
+              </div>
+
+              <h2 class="font-display text-lg font-semibold">3. Aplikasi Turunan</h2>
+              <p>Turunan dipakai untuk menentukan nilai maksimum-minimum, kecepatan sesaat, dan kemiringan garis singgung.</p>
+            </div>
+
+            <div class="mt-10 flex items-center justify-between border-t border-slate-200 pt-4 dark:border-ink-700">
+              <button @click="page='subject'" class="text-sm font-medium text-primary-600 hover:underline dark:text-primary-300">← Kembali ke daftar bab</button>
+              <button class="rounded-lg bg-accent-500 px-4 py-2 text-sm font-semibold text-white hover:bg-accent-600">Tandai sudah dibaca</button>
+            </div>
+          </article>
+
+          <aside class="hidden lg:block">
+            <div class="surface sticky top-20 rounded-xl p-4">
+              <p class="mb-3 font-mono text-[11px] font-bold uppercase tracking-wide text-slate-400 dark:text-ink-400">Daftar Isi</p>
+              <ul class="space-y-2 text-sm text-slate-500 dark:text-ink-400">
+                <li>1. Konsep Dasar</li>
+                <li>2. Aturan Turunan</li>
+                <li>3. Aplikasi Turunan</li>
+              </ul>
+            </div>
+          </aside>
+        </div>
+      </div>
+    </template>
+
+  </main>
+
+  <footer class="border-t border-slate-200 py-6 text-center text-xs text-slate-500 dark:border-ink-700 dark:text-ink-400">
+    Dibuat untuk membantu belajar — rangkuman ini bukan pengganti buku paket.
+  </footer>
+
+<script>
+  const subjects = [
+    { code:'MTK', name:'Matematika', category:'sains', topics:12 },
+    { code:'FIS', name:'Fisika', category:'sains', topics:10 },
+    { code:'KIM', name:'Kimia', category:'sains', topics:11 },
+    { code:'BIO', name:'Biologi', category:'sains', topics:13 },
+    { code:'EKO', name:'Ekonomi', category:'sosial', topics:9 },
+    { code:'SOS', name:'Sosiologi', category:'sosial', topics:8 },
+    { code:'SEJ', name:'Sejarah Indonesia', category:'sosial', topics:10 },
+    { code:'IND', name:'Bahasa Indonesia', category:'bahasa', topics:9 },
+    { code:'ENG', name:'Bahasa Inggris', category:'bahasa', topics:8 },
+  ];
+  const topics = [
+    { number:'Bab 1', title:'Barisan dan Deret', read:6, done:true },
+    { number:'Bab 2', title:'Fungsi Komposisi dan Invers', read:8, done:true },
+    { number:'Bab 3', title:'Limit Fungsi', read:7, done:false },
+    { number:'Bab 4', title:'Turunan Fungsi', read:10, done:false },
+    { number:'Bab 5', title:'Integral', read:9, done:false },
+  ];
+  const tabColor = c => c === 'sains' ? 'bg-primary-600' : c === 'sosial' ? 'bg-accent-500' : 'bg-primary-400';
+
+  const grid = document.getElementById('subject-grid');
+  subjects.forEach(s => {
+    const el = document.createElement('button');
+    el.className = "group surface relative flex flex-col justify-between overflow-hidden rounded-xl p-4 text-left transition hover:-translate-y-0.5 hover:shadow-lg sm:p-5";
+    el.innerHTML = `
+      <span class="absolute left-0 top-0 h-1.5 w-10 ${tabColor(s.category)} rounded-br-md"></span>
+      <div class="mt-2 flex items-start justify-between">
+        <span class="tab-badge ${tabColor(s.category)} text-white">${s.code}</span>
+        <svg class="h-4 w-4 text-slate-300 dark:text-ink-700" fill="none" viewBox="0 0 24 24" stroke="currentColor" stroke-width="2"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>
+      </div>
+      <div class="mt-4">
+        <h3 class="font-display text-sm font-semibold text-slate-800 dark:text-ink-100 sm:text-base">${s.name}</h3>
+        <p class="mt-1 text-xs text-slate-500 dark:text-ink-400">${s.topics} bab</p>
+      </div>`;
+    el.addEventListener('click', () => {
+      window.dispatchEvent(new CustomEvent('go-subject', { detail: s }));
+    });
+    grid.appendChild(el);
+  });
+
+  document.addEventListener('alpine:init', () => {});
+  window.addEventListener('go-subject', (e) => {
+    const root = document.querySelector('[x-data]');
+    root.__x.$data.goSubject(e.detail);
+  });
+
+  // topic list is rendered reactively once subject page is shown
+  const observer = new MutationObserver(() => {
+    const list = document.getElementById('topic-list');
+    if (list && !list.dataset.rendered) {
+      list.dataset.rendered = 'true';
+      topics.forEach(t => {
+        const el = document.createElement('button');
+        el.className = "surface group flex w-full items-center gap-4 rounded-lg p-4 text-left transition hover:border-primary-300 dark:hover:border-primary-600";
+        el.innerHTML = `
+          <span class="tab-badge shrink-0 font-mono ${t.done ? 'bg-accent-500 text-white' : 'bg-slate-100 text-slate-500 dark:bg-ink-800 dark:text-ink-400'}">${t.number}</span>
+          <span class="min-w-0 flex-1 truncate font-display text-sm font-medium text-slate-800 dark:text-ink-100 sm:text-base">${t.title}</span>
+          <span class="hidden shrink-0 font-mono text-xs text-slate-400 dark:text-ink-400 sm:inline">${t.read} menit</span>`;
+        el.addEventListener('click', () => {
+          const root = document.querySelector('[x-data]');
+          root.__x.$data.goTopic(t);
+        });
+        list.appendChild(el);
+      });
+    }
+  });
+  observer.observe(document.body, { childList: true, subtree: true });
+</script>
+
+</body>
+</html>
