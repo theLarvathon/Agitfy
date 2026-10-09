@@ -1,59 +1,79 @@
-<p align="center"><a href="https://laravel.com" target="_blank"><img src="https://raw.githubusercontent.com/laravel/art/master/logo-lockup/5%20SVG/2%20CMYK/1%20Full%20Color/laravel-logolockup-cmyk-red.svg" width="400" alt="Laravel Logo"></a></p>
+# Rangkuman Kelas 12 — Frontend (Laravel 12 + Tailwind)
 
-<p align="center">
-<a href="https://github.com/laravel/framework/actions"><img src="https://github.com/laravel/framework/workflows/tests/badge.svg" alt="Build Status"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/dt/laravel/framework" alt="Total Downloads"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/v/laravel/framework" alt="Latest Stable Version"></a>
-<a href="https://packagist.org/packages/laravel/framework"><img src="https://img.shields.io/packagist/l/laravel/framework" alt="License"></a>
-</p>
+## Cara lihat hasilnya cepat
+Buka `preview/preview.html` langsung di browser (double-click). File ini berdiri sendiri
+(pakai Tailwind CDN) supaya bisa dilihat tanpa perlu install project Laravel — flow
+landing → mapel → rangkuman + toggle dark mode sudah interaktif di situ.
 
-## About Laravel
+## Struktur untuk project Laravel
+Copy folder `resources/` dan `routes/web.php` ke root project Laravel 12 kamu (timpa file
+yang sudah ada bila perlu), lalu:
 
-Laravel is a web application framework with expressive, elegant syntax. We believe development must be an enjoyable and creative experience to be truly fulfilling. Laravel takes the pain out of development by easing common tasks used in many web projects, such as:
+```
+resources/
+  css/app.css              -> import di app.blade.php lewat @vite (ganti tag <link> manual)
+  views/
+    layouts/app.blade.php  -> layout utama, tempat dark mode di-inisialisasi
+    components/
+      navbar.blade.php
+      footer.blade.php
+      subject-card.blade.php
+      topic-item.blade.php
+      callout.blade.php
+      breadcrumb.blade.php
+    home.blade.php          -> landing page
+    subjects/show.blade.php -> daftar bab per mapel
+    topics/show.blade.php   -> halaman rangkuman
+routes/web.php              -> nama route yang dipakai di dalam view (home, subjects.show, topics.show)
+tailwind.config.js          -> token warna & font, sudah darkMode: 'class'
+```
 
-- [Simple, fast routing engine](https://laravel.com/docs/routing).
-- [Powerful dependency injection container](https://laravel.com/docs/container).
-- Multiple back-ends for [session](https://laravel.com/docs/session) and [cache](https://laravel.com/docs/cache) storage.
-- Expressive, intuitive [database ORM](https://laravel.com/docs/eloquent).
-- Database agnostic [schema migrations](https://laravel.com/docs/migrations).
-- [Robust background job processing](https://laravel.com/docs/queues).
-- [Real-time event broadcasting](https://laravel.com/docs/broadcasting).
+Setelah `npm install tailwindcss` di project asli, aktifkan build asset dengan:
+```blade
+@vite(['resources/css/app.css'])
+```
+menggantikan tag `<link>` manual di `layouts/app.blade.php`.
 
-Laravel is accessible, powerful, and provides tools required for large, robust applications.
+## Kenapa dibangun begini (biar gampang di-maintain)
 
-## Learning Laravel
+- **Semua bagian berulang jadi Blade component** (`<x-subject-card>`, `<x-topic-item>`,
+  `<x-callout>`, `<x-breadcrumb>`). Menambah mapel atau bab baru = menambah data,
+  bukan menulis HTML baru.
+- **Data dummy ditandai jelas** (`??=` di tiap view) supaya gampang dicabut begitu
+  Controller/Model sudah siap — tinggal kirim variabel dengan nama yang sama.
+- **Warna & font cuma didefinisikan sekali** di `tailwind.config.js` (`primary`,
+  `accent`, `ink`) dan dipakai lewat utility class — ganti nuansa warna cukup edit
+  satu file, tidak perlu cari-cari hex code di banyak tempat.
+- **Dark mode** pakai `class` strategy Tailwind + Alpine (`x-data`/`localStorage`),
+  jadi tidak butuh reload halaman dan preferensi tersimpan di browser siswa.
+- **Mobile-first**: semua layout dasar ditulis tanpa prefix (otomatis untuk HP),
+  baru ditambah `sm:`/`lg:` untuk memperluas ke tablet/desktop (grid 2 kolom → 3 → 4
+  di landing, TOC yang baru muncul di layar besar pada halaman rangkuman).
 
-Laravel has the most extensive and thorough [documentation](https://laravel.com/docs) and video tutorial library of all modern web application frameworks, making it a breeze to get started with the framework. You can also check out [Laravel Learn](https://laravel.com/learn), where you will be guided through building a modern Laravel application.
+## Konsep visual (ringkas)
+- **Warna**: biru (`primary`, #1B4D89) sebagai warna utama/chrome, hijau (`accent`,
+  #1FAE72) untuk aksi & progres (baca "tanda sudah dibaca").
+- **Font**: Lexend untuk judul (dirancang untuk keterbacaan — cocok untuk konten belajar),
+  Inter untuk teks isi rangkuman, JetBrains Mono untuk kode mapel/nomor bab/menit baca.
+- **Elemen ciri khas**: badge "tab index" ala pembatas buku/binder (kode mapel,
+  nomor bab) yang warnanya dikelompokkan per kategori (Sains = biru, Sosial = hijau),
+  supaya grid mapel di landing langsung terasa terorganisir seperti map pelajaran asli,
+  bukan sekadar kotak generik.
 
-If you don't feel like reading, [Laracasts](https://laracasts.com) can help. Laracasts contains thousands of video tutorials on a range of topics including Laravel, modern PHP, unit testing, and JavaScript. Boost your skills by digging into our comprehensive video library.
+## Catatan penting: Tailwind v4 (default di Laravel 12)
 
-## Laravel Sponsors
+Laravel 12 men-scaffold project baru dengan **Tailwind v4**, yang cara konfigurasinya beda
+dari v3:
 
-We would like to extend our thanks to the following sponsors for funding Laravel development. If you are interested in becoming a sponsor, please visit the [Laravel Partners program](https://partners.laravel.com).
+- Tidak pakai `tailwind.config.js` lagi (sudah dihapus dari paket ini) — semua warna & font
+  custom (`primary`, `accent`, `ink`, `font-display`, dst.) sekarang didefinisikan lewat
+  blok `@theme { ... }` langsung di `resources/css/app.css`.
+- `@tailwind base/components/utilities` diganti satu baris `@import "tailwindcss";`.
+- Dark mode berbasis class (`.dark` di `<html>`, dikontrol Alpine) butuh baris tambahan:
+  `@custom-variant dark (&:where(.dark, .dark *));` — tanpa ini, `dark:` akan mengikuti
+  pengaturan sistem, bukan toggle di navbar.
 
-### Premium Partners
-
-- **[Vehikl](https://vehikl.com)**
-- **[Tighten Co.](https://tighten.co)**
-- **[Kirschbaum Development Group](https://kirschbaumdevelopment.com)**
-- **[64 Robots](https://64robots.com)**
-- **[Curotec](https://www.curotec.com/services/technologies/laravel)**
-- **[DevSquad](https://devsquad.com/hire-laravel-developers)**
-- **[Redberry](https://redberry.international/laravel-development)**
-- **[Active Logic](https://activelogic.com)**
-
-## Contributing
-
-Thank you for considering contributing to the Laravel framework! The contribution guide can be found in the [Laravel documentation](https://laravel.com/docs/contributions).
-
-## Code of Conduct
-
-In order to ensure that the Laravel community is welcoming to all, please review and abide by the [Code of Conduct](https://laravel.com/docs/contributions#code-of-conduct).
-
-## Security Vulnerabilities
-
-If you discover a security vulnerability within Laravel, please send an e-mail to Taylor Otwell via [taylor@laravel.com](mailto:taylor@laravel.com). All security vulnerabilities will be promptly addressed.
-
-## License
-
-The Laravel framework is open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+Pastikan juga `vite.config.js` di project kamu sudah include plugin `@tailwindcss/vite()`
+(sudah default kalau project di-generate lewat `laravel new` versi terbaru). Kalau masih
+pakai Tailwind v3 di project kamu, tinggal balikkan `app.css` ke sintaks lama
+(`@tailwind base;` dst.) dan aktifkan lagi `tailwind.config.js` versi sebelumnya.
